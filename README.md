@@ -45,3 +45,7 @@
 **Time GET - rejected** http://localhost:8080/time
 
 ![](https://raw.githubusercontent.com/zeleugim88/nodeInitialDemo/desarrollo/screenshots/time.png)
+
+**Postman Endpoints Collection - Screenshot - Example**
+![](https://raw.githubusercontent.com/zeleugim88/nodeInitialDemo/desarrollo/screenshots/postman.png)
+
