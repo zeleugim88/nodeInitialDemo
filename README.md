@@ -1,50 +1,51 @@
+# Entrega 4.1: Node REST Server 💻
 
-# Node Initial Project
+### Nivell 1
+- Exercici 1 : Crea un servidor amb Express que retorni a una petició GET a l'endpoint /user un json amb el teu nom, edat i la url des d'on es fa la petició.
+- Exercici 2: Afegeix un endpoint /upload per a pujar al servidor un arxiu de tipus png, jpg o gif que retorni un missatge d'error en cas que l'extensió de l'arxiu no coincideixi amb aquestes.
 
-### Project Structure
+### Nivell 2
+- Exercici 1 : Creu un endpoint /time que rebi per POST com a paràmetre un JSON amb el nom d'usuari i retorni un objecte JSON que contingui l'hora i data actual. Inclogui un middleware que afegeixi la capçalera Cache-control: no-cache. Habiliti CORS (Cross-Origin Resource Sharing) en les respostes, ja sigui mitjançant Express o mitjançant un altre middleware.
 
-Main structure of node.js project. Folders / files:
+### Nivell 3
+- Exercici 1: Afegeixi un middleware a l'endpoint anterior que retorni un HTTP Status 401 - Unauthorized si la capçalera de la petició no conté autenticació bàsica (usuari i contrasenya).
 
-- <b>\_\_tests__</b>. Tests folder. See [Jest Docs](https://jestjs.io/es-ES/docs/configuration) and [Chai Docs](https://www.chaijs.com/)
-- <b>app</b>:
-    - <b>config</b>
-    - <b>controllers</b>
-    - <b>crons</b>
-    - <b>middleware</b>
-    - <b>models</b>
-    - <b>routes</b>
-    - <b>tmp</b>
-    - <b>app.js</b>. Entry point.
-- <b>.env</b>. Environment descriptor. See [dotenv doc](https://www.npmjs.com/package/dotenv).
-- <b>.eslintrc</b>. Linter JS, static code analyzer. See [EsLint Docs](https://eslint.org/docs/user-guide/configuring/configuration-files).
-- <b>.prettierignore</b>. Code formatter. See [Prettier Config](https://prettier.io/docs/en/configuration.html) and [Prettier Ignore](https://prettier.io/docs/en/ignore.html).
-- <b>.ecosystem.config.js</b>. Process Manage at runtime. See [PM2 Docs](https://pm2.keymetrics.io/).
-- <b>package.json</b>.
+### Instructions to run the programm
+1) Starting 🚀: To execute and test the program, first you need to copy the project on your local machine. For example, by **cloning the github repository**. 
+2) Pre requirements / Recommended tech-stack 📋: **Visual Studio Code, Node.js, npm**
+3) Installation 🔧 : Execute command **npm install** in the node terminal to install the dependencies
+4) Commands to start the program ⌨️ : **npm start**
 
-### Import project for use with WebStorm
+### Project Structure ⚙️ - Endpoints - Screenshots: 
 
-Follow the steps below:
-* Clone the project from the Github Platform. Execute:
-  ```
-  git clone [url project]
-  ```
-* Open the project downloaded.
-![Open Project](img/webstorm_open.png)
+**Homepage GET** http://localhost:8080/
 
+![](https://raw.githubusercontent.com/zeleugim88/nodeInitialDemo/desarrollo/screenshots/home.png)
 
-### Import project for use with Visual Studio Code
+**User GET** http://localhost:8080/user
 
-Follow the steps below:
-* Clone the project from the Github Platform. Execute:
-  ```
-  git clone [url project]
-  ```
-* Open the project downloaded.
-  ![Open Project](img/VSC_open.png)
+![](https://raw.githubusercontent.com/zeleugim88/nodeInitialDemo/desarrollo/screenshots/user.png)
 
+**Upload GET** http://localhost:8080/upload
 
-### Utilities
+![](https://raw.githubusercontent.com/zeleugim88/nodeInitialDemo/desarrollo/screenshots/upload-get.png)
 
-* [Node Developers Guide](https://nodejs.dev/learn)
-* **.gitignore file** configuration. See [Official Docs](https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files).
-* **Git branches**. See [Official Docs](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell)
+**Upload POST - accepted** http://localhost:8080/upload
+
+![](https://raw.githubusercontent.com/zeleugim88/nodeInitialDemo/desarrollo/screenshots/upload-post.png)
+
+**Upload POST - rejected** http://localhost:8080/upload
+
+![](https://raw.githubusercontent.com/zeleugim88/nodeInitialDemo/desarrollo/screenshots/upload-post-rejected.png)
+
+**Time GET - accepted** http://localhost:8080/time
+
+![](https://raw.githubusercontent.com/zeleugim88/nodeInitialDemo/desarrollo/screenshots/time-get.png)
+
+**Time GET - rejected** http://localhost:8080/time
+
+![](https://raw.githubusercontent.com/zeleugim88/nodeInitialDemo/desarrollo/screenshots/time.png)
+
+**Postman Endpoints Collection - Screenshot - Example**
+![](https://raw.githubusercontent.com/zeleugim88/nodeInitialDemo/desarrollo/screenshots/postman.png)
+
