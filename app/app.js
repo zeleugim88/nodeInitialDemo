@@ -12,8 +12,11 @@ const app = express()
 
 //Homepage Endpoint
 app.get('/', (req, res) => {
-  res.send('Entrega 4.1: Node REST Server APP')
+  res.json({
+    message: 'Entrega 4.1: Node REST Server APP'
+  })
 })
+
 
 //Nivell 1 - Exercici 1
 //Define user endpoint and respond with json
@@ -33,7 +36,9 @@ app.get('/upload', (req, res) => {
 
 //Define endpoint POST to upload picture
 app.post("/upload", upload, (req, res, next) => {
-  res.send("Image Uploaded");
+  res.json({
+    message: "Image Uploaded"
+  });
 });
 
 //Nivell 2  y Nivell 3
@@ -65,6 +70,13 @@ app.post("/time", express.json(), (req, res) => {
     date
   });
 });
+
+//Other routes
+app.get('*', (req,res) => {
+  res.status(404).json({
+    message: "Page not found"
+  })
+})
 
 app.listen(port, () => {
   console.log(`Entrega 4.1: Node REST Server APP listening on port ${port}`)
