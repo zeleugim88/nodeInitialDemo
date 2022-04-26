@@ -54,8 +54,16 @@ class Server {
     }
 
     listen() {
-        this.app.listen(this.port, () => {
+        this.app.listen(this.port, async () => {
             console.log(`Example app listening on port ${this.port}`)
+
+            //sale por consola 2 veces "executing.... " mirar a ver
+            try {
+                await db.sync({ force: false });
+                console.log('Database connection successful');
+            } catch (error) {
+                console.log('Database connection failed', error);
+            }
           })
     }
     
