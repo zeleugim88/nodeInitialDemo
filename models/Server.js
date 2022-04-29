@@ -1,5 +1,8 @@
 
 const express = require('express');
+const Player = require('../models/Player.js');
+const Game = require('../models/Game.js')
+const { username } = require('../config.js');
 const db  = require('../database/mysql.connection.js')
 
 class Server {
@@ -46,7 +49,11 @@ class Server {
         this.app.use( this.pathPlayers, require('../routes/routes.players.js'));
 
         //Other routes
-        
+        this.app.get('*', (req,res) => {
+            res.status(404).json({
+              message: "Page not found"
+            })
+          }) 
     }
 
     listen() {
@@ -54,14 +61,18 @@ class Server {
             console.log(`Example app listening on port ${this.port}`)
 
             //sale por consola 2 veces "executing.... " mirar a ver
+
             try {
-                await db.sync({ force: false });
+            //Synchronizing all models at once to create all the tables (force: false => if they do not already exist)
+                await db.sync({ force: false }); 
                 console.log('Database connection successful');
             } catch (error) {
                 console.log('Database connection failed', error);
             }
           })
     }
+
+    
     
     
 }

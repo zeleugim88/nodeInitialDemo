@@ -6,17 +6,16 @@ https://sequelize.org/docs/v6/core-concepts/model-basics/ */
 const { DataTypes } = require('sequelize');
 const db = require('../database/mysql.connection.js');
 
+
+//https://sequelize.org/docs/v7/other-topics/other-data-types/
 const Game = db.define('Game', {
-    id: {
-        type: DataTypes.STRING //generar
-    },
-    player_id: {
-        type: DataTypes.STRING //importar de Player
+    points: {
+        type: DataTypes.INTEGER //sumar el resultado de 2 dados
     },
     victory: {
-        type: DataTypes.BOOLEAN
-    },
+        type: DataTypes.BOOLEAN //si number es 7, victory = true
+    }
 });
 
-
 module.exports = Game;
+
