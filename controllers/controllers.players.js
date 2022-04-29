@@ -11,7 +11,6 @@ const postPlayers = async (req = request, res = response) => { //1
             });
             res.status(201).json(newPlayer);
         } catch (error) {
-            console.log(1)
             res.status(400).send(error)
         }
     }
@@ -19,15 +18,14 @@ const postPlayers = async (req = request, res = response) => { //1
             try {
                 let i = ""; 
                 let newName = "";
-                let searchName = "";
+                let foundPlayer = "";
                 do {
                     newName = req.body.name + String(i);
-                    searchName = await Player.findOne({ where: { name: newName }});
-                    console.log("searchName:"+searchName);
+                    foundPlayer = await Player.findOne({ where: { name: newName }});
                     i++
                     }
-                while (searchName !== null); //error
-                const newPlayer = await Player.create({ //ERRORRRRRRRRRRRRRRRRRRRR
+                while (foundPlayer !== null); //error
+                const newPlayer = await Player.create({ 
                     name: newName
                 });
                 res.status(200).json(newPlayer);
@@ -37,50 +35,26 @@ const postPlayers = async (req = request, res = response) => { //1
             }
         };
     };
- /*       
-        
-          } else if (req.body.name) {
-            try {
-              const player = await Player.findOne({ where: { name: req.body.name }});
-              if (player) {
-                res.status(400).json({ "Error":"User already exists" });
-              } else {
-                const player = await Player.create({
-                  name: req.body.name,
-                });
-        
-                res.status(200).json(player);
-              }
-            } catch (error) {
-              if (error.errors[0].message) {
-                res.status(400).send(error.errors[0].message);
-              } else {
-                res.status(400).send(error);
-              }
-            }
-          }
-        }); */
-    
-    
-  /*   res.json({
-        msg: 'Player added',
-        name: 'fake', //if empty, anonym
-        id: "343",//add random
-        date: "05-03-2021",//add date,
-        games: []
-    }); */
 
-const putPlayers = (req, res) => { //2
-        //st { name } = req.body;
-    //TO DO: update DB 
-    res.json({
-        msg: 'Player modified',
-        name: 'fake', //modified name
-        id: "343",//
-        date: "05-03-2021",//
-        games: []
-    });
-}
+    const putPlayers = async (req = request, res = response) => { //2
+        if (req.body.newName && req.body.name) {
+            let foundPlayer = "";
+            try {
+                foundPlayer = await Player.findOne(
+                    {where: { name: req.body.name}}
+                )
+            } catch (error) {
+                console.log(error)
+                res.status(400).send(error)
+            }
+
+            !foundPlayer ? 
+            res.status(404).json({ "Error": "The user does not exist in the database. Please introduce another user"}) :
+             (await foundPlayer.update({ name: req.body.newName }), res.status(200).json(foundPlayer))
+            
+        } else {console.log(res.status(400).json({"Error": "Introduce both a new name and the old name to update"}))}
+    }     
+
 
 const postThrowDices = (req, res) => { //3
 
