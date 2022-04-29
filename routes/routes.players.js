@@ -13,11 +13,11 @@ const { postPlayers,
 
 const router = Router();
 
-router.post('/', postPlayers); //1 //Cannot destructure property 'name' of 'req.body' as it is undefined.
+router.post('/', postPlayers); //1
 
-router.put('/', putPlayers); //2 //Cannot destructure property 'name' of 'req.body' as it is undefined.
+router.put('/', putPlayers); //2
 
-router.post('/:id/games', postThrowDices); //3 /
+router.post('/:id/games', postThrowDices); //3 
 
 router.delete('/:id/games', deletePlayerThrows ); //4
 

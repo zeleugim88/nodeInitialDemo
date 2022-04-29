@@ -11,13 +11,9 @@ class Server {
         this.pathPlayers = '/players';
         
         //Do not change order. 1) Connect to DB, 2) Middlewares, 3) Routes
-        
         this.connectDB();
-
         this.middlewares()
-
         this.routes();
-        
     }
 
     async connectDB() {
@@ -29,17 +25,14 @@ class Server {
         }
     }
 
-    middlewares() {
-        //cors, static...
+    middlewares() { //other possible middlewares: cors, static...
+        //Middelwares needed for POST / PUT requests and work with req.body. 
+        //https://stackoverflow.com/questions/23259168/what-are-express-json-and-express-urlencoded
         this.app.use( express.json() );
-        this.app.use(express.urlencoded({
+        this.app.use(express.urlencoded({ //based on bodyParser
           extended: true
         }));
-/*         this.app.use(bp.urlencoded({extended: true}));  */
     }
-
-//     app.use(bodyParser.json());
-
 
     routes() {
         //Homepage
@@ -51,6 +44,9 @@ class Server {
         
         //Routes from /players
         this.app.use( this.pathPlayers, require('../routes/routes.players.js'));
+
+        //Other routes
+        
     }
 
     listen() {
