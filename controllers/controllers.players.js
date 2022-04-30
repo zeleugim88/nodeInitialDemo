@@ -120,17 +120,14 @@ catch (error) {
   
 }
 
-const deletePlayerThrows = 
-async (req, res) => { //4
-        const { q, nombre = 'No name', apikey, page = 1, limit } = req.query;
-
-        res.json({
-            msg: 'Player modified',
-            name: "Pepito", //
-            id: "343",//
-            date: "05-03-2021",//
-            games: ["resetear array"] //resetear array
+const deletePlayerThrows = //Controller for endpoint 4
+async (req, res) => { 
+        const gamesToDelete = await Game.destroy({
+          where: {
+            player_id: req.params.id
+          },
         });
+        res.json({ "Request fulfilled": `${gamesToDelete} games from Player ${req.params.id} deleted!` });
 }
 
 const getPlayers = (req, res) => { //5
