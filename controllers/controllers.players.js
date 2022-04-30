@@ -136,17 +136,17 @@ async (req, res) => {
     } catch (error) { res.status(400).send(error) }
   };
 
-const getRanking = 
-// Read Games with average
+const getRanking = //Controller for endpoint 6 - Read Games with average
 async (req, res) => {
-console.log('cotinue here')
-  }
+        try { res.json( await Game.findAll({ where : { player_id: req.params.id } }))
+        } catch (error) {
+          res.status(404).send(error);
+        }
+      }
 
-const getScores = (req, res) => { //7
-
-        res.json({
-            msg: 'Media de puntuaciones'
-        });
+const getScores = 
+async (req, res) => { //7
+console.log("continuar aqui");
 }
 
 const getLoser = (req, res) => { //8
