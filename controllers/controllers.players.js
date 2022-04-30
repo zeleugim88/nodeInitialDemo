@@ -145,11 +145,16 @@ async (req, res) => {
       }
 
 const getScores = 
-async (req, res) => { //7
-console.log("continuar aqui");
+async (req, res) => { //Controller for endpoint 7 - 
+    try {
+        res.json( await Game.findAll({
+            attributes: [ [db.fn('AVG', db.col('victory')), 'victory%'] ] }) )
+      } catch (error) {
+        res.status(400).send(error);
+      }
 }
 
-const getLoser = (req, res) => { //8
+const getLoser = (req, res) => { //Controller for endpoint 8 - 
 
     res.json({
         msg: 'Perdedor'
