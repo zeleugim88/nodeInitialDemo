@@ -9,7 +9,10 @@ const db = require('../database/mysql.connection.js');
 
 //https://sequelize.org/docs/v7/other-topics/other-data-types/
 const Game = db.define('Game', {
-    points: {
+    player_id: {
+        type: DataTypes.INTEGER //sumar el resultado de 2 dados
+    },
+    score: {
         type: DataTypes.INTEGER //sumar el resultado de 2 dados
     },
     victory: {

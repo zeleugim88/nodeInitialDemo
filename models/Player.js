@@ -10,6 +10,9 @@ const db = require('../database/mysql.connection.js');
 const Player = db.define('Player', {
     name: {
         type: DataTypes.STRING
+    },
+    victoryRate: {
+        type: DataTypes.INTEGER
     }
 });
 
