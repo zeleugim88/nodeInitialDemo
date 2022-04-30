@@ -130,17 +130,17 @@ async (req, res) => {
         res.json({ "Request fulfilled": `${gamesToDelete} games from Player ${req.params.id} deleted!` });
 }
 
-const getPlayers = (req, res) => { //5
-    res.json({
-        msg: "List collection instead of document"
-    });
-}
+const getPlayers = //Controller for endpoint 5 - List all Players
+async (req, res) => {
+    try { res.json(await Player.findAll())
+    } catch (error) { res.status(400).send(error) }
+  };
 
-const getRanking = (req, res) => { //6
-        res.json({
-            msg: 'Lista de jugadas de un jugador'
-        });
-}
+const getRanking = 
+// Read Games with average
+async (req, res) => {
+console.log('cotinue here')
+  }
 
 const getScores = (req, res) => { //7
 
