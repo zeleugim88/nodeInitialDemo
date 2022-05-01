@@ -178,10 +178,22 @@ async (req, res) => {
         }
       }
 
-const getWinner = (req, res) => { //9
-    res.json({
-        msg: 'Ganador'
+const getWinner = //Controller for endpoint 9
+async (req, res) => { //9
+  try {
+    const maxScore = await Player.findAll({
+      attributes: [ [db.fn('MAX', db.col('victoryRate')), 'highestScore'] ]
     });
+    const winner = await Player.findOne({
+      where: { //https://sequelize.org/api/v6/class/src/model.js~model
+        //Model instances operate with the concept of a "dataValues" property, which stores the actual values represented by the instance.
+        victoryRate: { [Op.eq]: maxScore[0].dataValues.highestScore }
+      },
+    });     
+    res.json(winner);
+  } catch (error) {
+    res.status(400).send(error);
+  }
 }
 
 
