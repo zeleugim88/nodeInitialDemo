@@ -1,7 +1,10 @@
 const { response, request } = require('express');
 const Player = require('../models/Player.js');
 const Game = require('../models/Game.js');
-const db  = require('../database/mysql.connection.js')
+const db  = require('../database/mysql.connection.js') // This is the main class, the entry point to sequelize.
+//Sequalize methods => https://sequelize.org/api/v6/class/src/sequelize.js~sequelize
+const { Op } = require('sequelize'); //Sequelize provides several operators "Op" => where ([Op.and]:, [Op.or]); 
+//some attributes ([Op.eq], [Op.ne]...) https://sequelize.org/docs/v6/core-concepts/model-querying-basics/
 
 const postPlayers = //Controller for endpoint 1
 async (req = request, res = response) => { 
@@ -99,8 +102,12 @@ catch (error) {
 }
 
       let victoryRateCalculation = await Game.findAll({
+        //You can use "sequelize.fn" to do aggregation with avg, count, max, min, sum 
+        //When using aggregation function, you must give it an alias to be able to access it from the model.  
+        //db.col => Creates an object which represents a column in the DB, this allows referencing another column in your query. 
+        //This is often useful in conjunction with sequelize.fn
         attributes: [
-          [db.fn('avg', db.col('victory')), 'averageWin'],
+          [db.fn('avg', db.col('victory')), 'averageWin'], 
         ],
         where: {
           player_id: req.params.id
@@ -110,7 +117,6 @@ catch (error) {
       victoryRateCalculation = victoryRateCalculation[0].get({ plain: false }).averageWin
   
       await Player.update({
-    
         victoryRate: victoryRateCalculation
       }, {
         where: {
@@ -154,12 +160,23 @@ async (req, res) => { //Controller for endpoint 7 -
       }
 }
 
-const getLoser = (req, res) => { //Controller for endpoint 8 - 
-
-    res.json({
-        msg: 'Perdedor'
-    });
-}
+const getLoser = //Controller for endpoint 8 -  
+async (req, res) => { 
+        try {
+          const minScore = await Player.findAll({
+            attributes: [ [db.fn('MIN', db.col('victoryRate')), 'lowestScore'] ]
+          });
+          const loser = await Player.findOne({
+            where: { //https://sequelize.org/api/v6/class/src/model.js~model
+              //Model instances operate with the concept of a "dataValues" property, which stores the actual values represented by the instance.
+              victoryRate: { [Op.eq]: minScore[0].dataValues.lowestScore }
+            },
+          });     
+          res.json(loser);
+        } catch (error) {
+          res.status(400).send(error);
+        }
+      }
 
 const getWinner = (req, res) => { //9
     res.json({
