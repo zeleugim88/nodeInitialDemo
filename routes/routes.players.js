@@ -5,7 +5,7 @@ const { postPlayers,
         postThrowDices,
         deletePlayerThrows,
         getPlayers,
-        getRanking,
+        getGames,
         getScores,
         getLoser,
         getWinner
@@ -23,7 +23,7 @@ router.delete('/:id/games', deletePlayerThrows ); //4
 
 router.get('/', getPlayers ); //5
 
-router.get('/:id/games', getRanking ); //6
+router.get('/:id/games', getGames ); //6
 
 router.get('/ranking', getScores ); //7
 

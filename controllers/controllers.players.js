@@ -4,7 +4,6 @@ const Game = require('../models/Game.js');
 const sequelize = require('../database/mysql.connection.js') // This is the main class, the entry point to sequelize.
 //Sequalize methods => https://sequelize.org/api/v6/class/src/sequelize.js~sequelize
 const { Op } = require('sequelize'); //Sequelize provides several operators "Op" => where ([Op.and]:, [Op.or]); 
-const { get } = require('../../itacademy-sprint4.2-sequelize-dices/src/routes/players.js');
 //some attributes ([Op.eq], [Op.ne]...) https://sequelize.org/docs/v6/core-concepts/model-querying-basics/
 
 const postPlayers = //Controller for endpoint 1 => POST /players: crea un jugador
@@ -125,9 +124,7 @@ const postThrowDices = //Controller for endpoint 3 => POST /players/{id}/games: 
 const deletePlayerThrows = //Controller for endpoint 4 => DELETE /players/{id}/games: elimina les tirades del jugador
   async (req, res) => {
     const gamesToDelete = await Game.destroy({
-      where: {
-        player_id: req.params.id
-      },
+      where: { player_id: req.params.id },
     });
     res.json({ "Request fulfilled": `${gamesToDelete} games from Player ${req.params.id} deleted!` });
   }
@@ -139,7 +136,7 @@ const getPlayers = //Controller for endpoint 5 => GET /players: retorna el llist
     } catch (error) { res.status(400).send(error) }
   };
 
-const getRanking = //Controller for endpoint 6 => GET /players/{id}/games: retorna el llistat de jugades per un jugador.
+const getGames = //Controller for endpoint 6 => GET /players/{id}/games: retorna el llistat de jugades per un jugador.
   async (req, res) => {
     try {
       res.json(await Game.findAll({ where: { player_id: req.params.id } }))
@@ -177,6 +174,13 @@ const getLoser = //Controller for endpoint 8 => GET /players/ranking/loser: reto
     }
   }
 
+/*   let victoryRateCalculation = await Game.findAll({
+    attributes: [[sequelize.fn('avg', sequelize.col('victory')), 'averageWin'],],
+    where: { player_id: req.params.id }
+  });
+
+  const victoryRate = victoryRateCalculation[0].dataValues.averageWin; */
+
 const getWinner = //Controller for endpoint 9 => GET /players/ranking/winner: retorna el jugador amb millor percentatge d’èxit
   async (req, res) => { //9
     try {
@@ -202,7 +206,7 @@ module.exports = {
   postThrowDices,
   deletePlayerThrows,
   getPlayers,
-  getRanking,
+  getGames,
   getScores,
   getLoser,
   getWinner
