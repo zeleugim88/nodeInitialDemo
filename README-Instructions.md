@@ -7,10 +7,15 @@
 2) Pre requirements / Recommended tech-stack 📋: **Visual Studio Code, Node.js, npm, mySQL, MongoDB**
 3) Installation 🔧 : Execute command **npm install** in the node terminal to install the dependencies
 4) Set local variables, localhost, mysql password etc in the files ".env" and "config.js"
-5) Create database, for example in MySQL Workbench run SQL query => CREATE DATABASE "node" (same name as in the "config.js" file;
+5) Create database, for example in MySQL Workbench run SQL query => CREATE DATABASE "node" ("node" or same name as in the "config.js" file;
+
+![](https://raw.githubusercontent.com/zeleugim88/nodeInitialDemo/4.2.Daus/img/a.png)
+
 6) Commands to start the program ⌨️ : **npm start**
 
 ### Project Structure ⚙️ 
+
+![](https://raw.githubusercontent.com/zeleugim88/nodeInitialDemo/4.2.Daus/img/0.png)
 
 ### Endpoints - Postman Collection - Screenshots: 
 
