@@ -110,18 +110,12 @@ const postThrowDices = //Controller for endpoint 3 => POST /players/{id}/games: 
       });
 
       //Otra forma??:
-    /*   const gamesNum = await Player.count();
-      const sumVictoryRates = await Player.sum('victoryRate');
+    /*const gamesNum = await Games.count() where id??...;
+      const sumVictoryRates = await Games.sum victory where id = req.params.id....????
       const victoryRateCalculation = Math.round((sumVictoryRates / gamesNum) * 1000) / 1000;
-      res.json({ totalVictoryRate: totalVictoryRate }) */
-
-    
-      //const victoryRate = Number(victoryRateCalculation[0].dataValues.avgSuccess); 
-      const victoryRate = Number(victoryRateCalculation[0].get({ plain: false }).avgSuccess)
-      console.log(victoryRateCalculation)
-      console.log(typeof(victoryRate))
-      console.log(victoryRate)
-      
+    */
+      const victoryRate = Number(victoryRateCalculation[0].dataValues.avgSuccess); 
+      //const victoryRate = Number(victoryRateCalculation[0].get({ plain: false }).avgSuccess)   
       
       //2.2 Update Player with "average victory rate" aggregation
       await Player.update({
@@ -160,55 +154,38 @@ const getGames = //Controller for endpoint 6 => GET /players/{id}/games: retorna
 const getScores =
   async (req, res) => { //Controller for endpoint 7 => GET /players/ranking: retorna el percentatge mig d’èxits del conjunt de tots els jugadors
     try {
-      /* res.json(await Game.findAll({
-        attributes: [[sequelize.fn('AVG', sequelize.col('victory')), 'totalVictoryRate']]
-      })) */
       const playersNum = await Player.count();
       const sumVictoryRates = await Player.sum('victoryRate');
       const totalVictoryRate = Math.round((sumVictoryRates / playersNum) * 1000) / 1000;
       res.json({ totalVictoryRate: totalVictoryRate })
+      //Otra forma:
+      /* res.json(await Game.findAll({
+        attributes: [[sequelize.fn('AVG', sequelize.col('victory')), 'totalVictoryRate']]
+      })) */
     } catch (error) {
       res.status(400).send(error);
     }
   }
-
-  //Other option for getScores: 
-/*    const playersNum = await Player.count();
-      const sumVictoryRates = await Player.sum('victoryRate');
-      const totalVictoryRate = sumVictoryRates / playersNum; */
 
 const getLoser = //Controller for endpoint 8 => GET /players/ranking/loser: retorna el jugador amb pitjor percentatge d’èxit  
   async (req, res) => {
     try {
-      /* const minScore = await Player.min('victoryRate');
-      console.log(minScore)
-      const loser = await Player.findAll({ where: { victoryRate: minScore } })
-      console.log(loser)
-      res.status(200).json( { loser } ); */
-      const minScore = await Player.findAll({
+      const minScore = await Player.min('victoryRate');
+      const loser = await Player.findAll({ where: { victoryRate: minScore } });
+      res.status(200).json( { loser } );
+/*       const minScore = await Player.findAll({
         attributes: [[sequelize.fn('MIN', sequelize.col('victoryRate')), 'lowestScore']]
       });
-      console.log(1)
-      console.log(minScore);
       const loser = await Player.findAll({
         where: { //https://sequelize.org/api/v6/class/src/model.js~model
-          //Model instances operate with the concept of a "dataValues" property, which stores the actual values represented by the instance.
           victoryRate: { [Op.eq]: minScore[0].dataValues.lowestScore }
-          //victoryRate: 0.0714 //minScore[0].dataValues.lowestScore
         }
-      });
-      res.json(loser);
+      }); 
+      res.json(loser); */
     } catch (error) {
       res.status(400).send(error);
     }
   }
-
-/*   let victoryRateCalculation = await Game.findAll({
-    attributes: [[sequelize.fn('avg', sequelize.col('victory')), 'avgSuccess'],],
-    where: { player_id: req.params.id }
-  });
-
-  const victoryRate = victoryRateCalculation[0].dataValues.avgSuccess; */
 
 const getWinner = //Controller for endpoint 9 => GET /players/ranking/winner: retorna el jugador amb millor percentatge d’èxit
   async (req, res) => { //9
