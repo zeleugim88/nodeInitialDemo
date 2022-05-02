@@ -30,7 +30,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{ \"name\": \"rodo\" }",
+					"raw": "{ \"name\": \"mamahuhu\" }",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -57,7 +57,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{ \r\n    \"newName\": \"nameChange3\",\r\n    \"name\": \"nameChange2\"\r\n}",
+					"raw": "{ \r\n    \"newName\": \"pedro\",\r\n    \"name\": \"pedri\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -92,14 +92,14 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/players/1/games",
+					"raw": "localhost:8080/players/4/games",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"players",
-						"1",
+						"4",
 						"games"
 					]
 				}
@@ -112,14 +112,14 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/players/3/games",
+					"raw": "localhost:8080/players/4/games",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
 						"players",
-						"3",
+						"4",
 						"games"
 					]
 				}
