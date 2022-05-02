@@ -1,15 +1,14 @@
 const { response, request } = require('express');
 const Player = require('../models/Player.js');
 const Game = require('../models/Game.js');
-const db  = require('../database/mysql.connection.js') // This is the main class, the entry point to sequelize.
+const sequelize  = require('../database/mysql.connection.js') // This is the main class, the entry point to sequelize.
 //Sequalize methods => https://sequelize.org/api/v6/class/src/sequelize.js~sequelize
 const { Op } = require('sequelize'); //Sequelize provides several operators "Op" => where ([Op.and]:, [Op.or]); 
 //some attributes ([Op.eq], [Op.ne]...) https://sequelize.org/docs/v6/core-concepts/model-querying-basics/
 
-const postPlayers = //Controller for endpoint 1
+const postPlayers = //Controller for endpoint 1 => POST /players: crea un jugador
 async (req = request, res = response) => { 
-    //TO DO: guardar DB 
-    
+  //If user introduces either no name or "ANÒNIM", an anonymous player is created. 
     if (req.body.name == "ANÒNIM" || !req.body.name) {
         try {
             const newPlayer = await Player.create({
@@ -19,7 +18,7 @@ async (req = request, res = response) => {
         } catch (error) {
             res.status(400).send(error)
         }
-    }
+    } //if the name is already being used, a digit is added at the end of the user name
         else if (req.body.name) {
             try {
                 let i = ""; 
@@ -42,7 +41,7 @@ async (req = request, res = response) => {
         };
     };
 
-    const putPlayers = //Controller for Endpoint 2
+    const putPlayers = //Controller for Endpoint 2 => PUT /players: modifica el nom del jugador
     async (req = request, res = response) => { 
         if (req.body.newName && req.body.name) {
             let foundPlayer = "";
@@ -63,9 +62,10 @@ async (req = request, res = response) => {
     }     
 
 
-const postThrowDices = //Controller for endpoint 3
+const postThrowDices = //Controller for endpoint 3 => POST /players/{id}/games: un jugador específic realitza una tirada
 async (req = request, res = response) => { 
 
+//Throw two dices. If total socre is 7, the player has won the game. 
 const diceRoll1 = Math.floor( Math.random() * 6 ) +1;
 const diceRoll2 = Math.floor( Math.random() * 6 ) +1;
 const score = diceRoll1 + diceRoll2;
@@ -74,9 +74,9 @@ const victory = score === 7 ? true : false;
     let foundPlayer = "";
     try {
         foundPlayer = await Player.findOne(
-            {where: { name: req.body.name}}
+            {where: { id: req.params.id}} //Another possibility: use "name: req.body.name" to double check with name in JSON
         )
-    } catch (error) {
+    } catch (error) { 
         console.log(error)
         res.status(400).send(error)
     }
@@ -104,10 +104,10 @@ catch (error) {
       let victoryRateCalculation = await Game.findAll({
         //You can use "sequelize.fn" to do aggregation with avg, count, max, min, sum 
         //When using aggregation function, you must give it an alias to be able to access it from the model.  
-        //db.col => Creates an object which represents a column in the DB, this allows referencing another column in your query. 
+        //sequelize.col => Creates an object which represents a column in the DB, this allows referencing another column in your query. 
         //This is often useful in conjunction with sequelize.fn
         attributes: [
-          [db.fn('avg', db.col('victory')), 'averageWin'], 
+          [sequelize.fn('avg', sequelize.col('victory')), 'averageWin'], 
         ],
         where: {
           player_id: req.params.id
@@ -126,7 +126,7 @@ catch (error) {
   
 }
 
-const deletePlayerThrows = //Controller for endpoint 4
+const deletePlayerThrows = //Controller for endpoint 4 => DELETE /players/{id}/games: elimina les tirades del jugador
 async (req, res) => { 
         const gamesToDelete = await Game.destroy({
           where: {
@@ -136,13 +136,13 @@ async (req, res) => {
         res.json({ "Request fulfilled": `${gamesToDelete} games from Player ${req.params.id} deleted!` });
 }
 
-const getPlayers = //Controller for endpoint 5 - List all Players
+const getPlayers = //Controller for endpoint 5 => GET /players: retorna el llistat de tots els jugadors del sistema amb el seu percentatge mig d’èxits
 async (req, res) => {
     try { res.json(await Player.findAll())
     } catch (error) { res.status(400).send(error) }
   };
 
-const getRanking = //Controller for endpoint 6 - Read Games with average
+const getRanking = //Controller for endpoint 6 => GET /players/{id}/games: retorna el llistat de jugades per un jugador.
 async (req, res) => {
         try { res.json( await Game.findAll({ where : { player_id: req.params.id } }))
         } catch (error) {
@@ -151,20 +151,20 @@ async (req, res) => {
       }
 
 const getScores = 
-async (req, res) => { //Controller for endpoint 7 - 
+async (req, res) => { //Controller for endpoint 7 => GET /players/ranking: retorna el percentatge mig d’èxits del conjunt de tots els jugadors
     try {
         res.json( await Game.findAll({
-            attributes: [ [db.fn('AVG', db.col('victory')), 'victory%'] ] }) )
+            attributes: [ [sequelize.fn('AVG', sequelize.col('victory')), 'victory%'] ] }) )
       } catch (error) {
         res.status(400).send(error);
       }
 }
 
-const getLoser = //Controller for endpoint 8 -  
+const getLoser = //Controller for endpoint 8 => GET /players/ranking/loser: retorna el jugador amb pitjor percentatge d’èxit  
 async (req, res) => { 
         try {
           const minScore = await Player.findAll({
-            attributes: [ [db.fn('MIN', db.col('victoryRate')), 'lowestScore'] ]
+            attributes: [ [sequelize.fn('MIN', sequelize.col('victoryRate')), 'lowestScore'] ]
           });
           const loser = await Player.findOne({
             where: { //https://sequelize.org/api/v6/class/src/model.js~model
@@ -178,11 +178,11 @@ async (req, res) => {
         }
       }
 
-const getWinner = //Controller for endpoint 9
+const getWinner = //Controller for endpoint 9 => GET /players/ranking/winner: retorna el jugador amb millor percentatge d’èxit
 async (req, res) => { //9
   try {
     const maxScore = await Player.findAll({
-      attributes: [ [db.fn('MAX', db.col('victoryRate')), 'highestScore'] ]
+      attributes: [ [sequelize.fn('MAX', sequelize.col('victoryRate')), 'highestScore'] ]
     });
     const winner = await Player.findOne({
       where: { //https://sequelize.org/api/v6/class/src/model.js~model
