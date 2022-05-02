@@ -12,7 +12,7 @@ const Player = db.define('Player', {
         type: DataTypes.STRING
     },
     victoryRate: {
-        type: DataTypes.FLOAT
+        type: DataTypes.DECIMAL(10, 2)
     }
 });
 

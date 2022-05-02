@@ -105,11 +105,23 @@ const postThrowDices = //Controller for endpoint 3 => POST /players/{id}/games: 
       //sequelize.fn => aggregation with avg, count, max, min, sum => https://sequelize.org/docs/v6/core-concepts/model-querying-basics/
       //sequelize.col => https://sequelize.org/api/v6/class/src/sequelize.js~sequelize
       let victoryRateCalculation = await Game.findAll({
-        attributes: [[sequelize.fn('avg', sequelize.col('victory')), 'averageWin'],],
+        attributes: [[sequelize.fn('avg', sequelize.col('victory')), 'avgSuccess'],],
         where: { player_id: req.params.id }
       });
+
+      //Otra forma??:
+    /*   const gamesNum = await Player.count();
+      const sumVictoryRates = await Player.sum('victoryRate');
+      const victoryRateCalculation = Math.round((sumVictoryRates / gamesNum) * 1000) / 1000;
+      res.json({ totalVictoryRate: totalVictoryRate }) */
+
     
-      const victoryRate = victoryRateCalculation[0].dataValues.averageWin;
+      //const victoryRate = Number(victoryRateCalculation[0].dataValues.avgSuccess); 
+      const victoryRate = Number(victoryRateCalculation[0].get({ plain: false }).avgSuccess)
+      console.log(victoryRateCalculation)
+      console.log(typeof(victoryRate))
+      console.log(victoryRate)
+      
       
       //2.2 Update Player with "average victory rate" aggregation
       await Player.update({
@@ -148,25 +160,42 @@ const getGames = //Controller for endpoint 6 => GET /players/{id}/games: retorna
 const getScores =
   async (req, res) => { //Controller for endpoint 7 => GET /players/ranking: retorna el percentatge mig d’èxits del conjunt de tots els jugadors
     try {
-      res.json(await Game.findAll({
-        attributes: [[sequelize.fn('AVG', sequelize.col('victory')), 'victory%']]
-      }))
+      /* res.json(await Game.findAll({
+        attributes: [[sequelize.fn('AVG', sequelize.col('victory')), 'totalVictoryRate']]
+      })) */
+      const playersNum = await Player.count();
+      const sumVictoryRates = await Player.sum('victoryRate');
+      const totalVictoryRate = Math.round((sumVictoryRates / playersNum) * 1000) / 1000;
+      res.json({ totalVictoryRate: totalVictoryRate })
     } catch (error) {
       res.status(400).send(error);
     }
   }
 
+  //Other option for getScores: 
+/*    const playersNum = await Player.count();
+      const sumVictoryRates = await Player.sum('victoryRate');
+      const totalVictoryRate = sumVictoryRates / playersNum; */
+
 const getLoser = //Controller for endpoint 8 => GET /players/ranking/loser: retorna el jugador amb pitjor percentatge d’èxit  
   async (req, res) => {
     try {
+      /* const minScore = await Player.min('victoryRate');
+      console.log(minScore)
+      const loser = await Player.findAll({ where: { victoryRate: minScore } })
+      console.log(loser)
+      res.status(200).json( { loser } ); */
       const minScore = await Player.findAll({
         attributes: [[sequelize.fn('MIN', sequelize.col('victoryRate')), 'lowestScore']]
       });
-      const loser = await Player.findOne({
+      console.log(1)
+      console.log(minScore);
+      const loser = await Player.findAll({
         where: { //https://sequelize.org/api/v6/class/src/model.js~model
           //Model instances operate with the concept of a "dataValues" property, which stores the actual values represented by the instance.
           victoryRate: { [Op.eq]: minScore[0].dataValues.lowestScore }
-        },
+          //victoryRate: 0.0714 //minScore[0].dataValues.lowestScore
+        }
       });
       res.json(loser);
     } catch (error) {
@@ -175,25 +204,27 @@ const getLoser = //Controller for endpoint 8 => GET /players/ranking/loser: reto
   }
 
 /*   let victoryRateCalculation = await Game.findAll({
-    attributes: [[sequelize.fn('avg', sequelize.col('victory')), 'averageWin'],],
+    attributes: [[sequelize.fn('avg', sequelize.col('victory')), 'avgSuccess'],],
     where: { player_id: req.params.id }
   });
 
-  const victoryRate = victoryRateCalculation[0].dataValues.averageWin; */
+  const victoryRate = victoryRateCalculation[0].dataValues.avgSuccess; */
 
 const getWinner = //Controller for endpoint 9 => GET /players/ranking/winner: retorna el jugador amb millor percentatge d’èxit
   async (req, res) => { //9
     try {
-      const maxScore = await Player.findAll({
+      const maxScore = await Player.max('victoryRate');
+      const winner = await Player.findAll({ where: { victoryRate: maxScore } })
+      res.status(200).json({ winner });
+      /* const maxScore = await Player.findAll({
         attributes: [[sequelize.fn('MAX', sequelize.col('victoryRate')), 'highestScore']]
-      });
-      const winner = await Player.findOne({
+      }); */
+      /* const winner = await Player.findOne({
         where: { //https://sequelize.org/api/v6/class/src/model.js~model
           //Model instances operate with the concept of a "dataValues" property, which stores the actual values represented by the instance.
           victoryRate: { [Op.eq]: maxScore[0].dataValues.highestScore }
         },
-      });
-      res.json(winner);
+      }); */
     } catch (error) {
       res.status(400).send(error);
     }
