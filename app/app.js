@@ -24,7 +24,9 @@ app.get('/user', (req, res) => {
   res.json({
     name: 'Daniel M.',
     age: 33,
-    url: `http://localhost:${port}/user`
+    url: req.protocol + "://" + req.get("Host") + req.originalUrl //No hardcodear!!! `http://localhost:${port}/user`
+    //protocol => http, req.get("Host") => localhost:8080 + 
+    //TODO ver opciones para no hardcodear esto
   })
 })
 
@@ -34,6 +36,7 @@ app.get('/upload', (req, res) => {
   res.sendFile(path.join(__dirname, `../public/upload.html`)) //
 });
 
+//TODO hacerlo en postman => body => form data
 //Define endpoint POST to upload picture
 app.post("/upload", upload, (req, res, next) => {
   res.json({
@@ -55,12 +58,13 @@ app.use("/time", (req, res, next) => {
 app.use("/time", (req, res, next) => {
   if (!req.headers.authorization) {
     //return res.status(403).json({ error: 'No credentials sent!' });
-    return res.status(403).send("Credentials not valid");
+    return res.status(401).send("Credentials not valid");
   }
   //else {return res.send('"Cache-control" - "no-cache" set in headers')}
   next();
 })
 
+//TODO Comprobar su contenido de headers
 //Endpoint that responses with time and date. Console shows user sent with Postman body - raw JSON
 app.post("/time", express.json(), (req, res) => {
   const { user } = req.body
@@ -72,7 +76,8 @@ app.post("/time", express.json(), (req, res) => {
 });
 
 //Other routes
-app.get('*', (req,res) => {
+//TODO solo vale para GET app.get es mejor usar app.use
+app.use('*', (req,res) => {
   res.status(404).json({
     message: "Page not found"
   })
