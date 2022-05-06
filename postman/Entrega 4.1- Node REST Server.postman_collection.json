@@ -46,8 +46,23 @@
 		{
 			"name": "/upload",
 			"request": {
-				"method": "GET",
+				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": "g5_a_b06Q/bender.gif"
+						},
+						{
+							"key": "",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
 				"url": {
 					"raw": "http://localhost:8080/upload",
 					"protocol": "http",
@@ -63,10 +78,20 @@
 			"response": []
 		},
 		{
-			"name": "/upload",
+			"name": "/upload (Error image not valid)",
 			"request": {
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": "EK0UubKIu/bender2.webp"
+						}
+					]
+				},
 				"url": {
 					"raw": "http://localhost:8080/upload",
 					"protocol": "http",
@@ -85,31 +110,21 @@
 			"name": "/time (with authorization)",
 			"request": {
 				"auth": {
-					"type": "basic",
-					"basic": [
-						{
-							"key": "password",
-							"value": "itacademy",
-							"type": "string"
-						},
-						{
-							"key": "username",
-							"value": "pepito",
-							"type": "string"
-						}
-					]
+					"type": "noauth"
 				},
 				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"name\": \"Pepito\"}\r\n",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
+				"header": [
+					{
+						"key": "name",
+						"value": "pepito",
+						"type": "text"
+					},
+					{
+						"key": "password",
+						"value": "123456",
+						"type": "text"
 					}
-				},
+				],
 				"url": {
 					"raw": "http://localhost:8080/time",
 					"protocol": "http",
@@ -128,10 +143,21 @@
 			"name": "/time (without authorization)",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "name",
+						"value": "pepito",
+						"type": "text"
+					},
+					{
+						"key": "password",
+						"value": "NotValidPassword",
+						"type": "text"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"name\": \"pepito\"}",
+					"raw": "",
 					"options": {
 						"raw": {
 							"language": "json"
