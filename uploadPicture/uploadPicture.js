@@ -21,7 +21,7 @@ const upload = multer({
     fileFilter: (req, file, cb) => {
         const fileExtension = path.extname(file.originalname).toLowerCase();
             fileExtension == ".png" || fileExtension == ".jpg" || fileExtension == ".gif" ? cb(null, true)
-            : cb(new Error("Formats allowed: .gif, .png and .jpg")) 
+            : cb(new Error ("Error. Formats allowed: .gif, .png and .jpg")) 
     }
 }).single('image');
 

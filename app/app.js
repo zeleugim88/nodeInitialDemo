@@ -23,10 +23,10 @@ app.get('/', (req, res) => {
 app.get('/user', (req, res) => {
   res.json({
     name: 'Daniel M.',
-    age: 33,
-    url: req.protocol + "://" + req.get("Host") + req.originalUrl //No hardcodear!!! `http://localhost:${port}/user`
-    //protocol => http, req.get("Host") => localhost:8080 + 
-    //TODO ver opciones para no hardcodear esto
+    age: 34,
+    url: req.protocol + "://" + req.hostname + ":"+port + req.originalUrl 
+    //TODO RESUELTO: no hardcodear `http://localhost:${process.env.PORT}/user`
+    //https://expressjs.com/es/api.html => req.protocol, req.hostname, req.originalUrl
   })
 })
 
@@ -36,7 +36,9 @@ app.get('/upload', (req, res) => {
   res.sendFile(path.join(__dirname, `../public/upload.html`)) //
 });
 
-//TODO hacerlo en postman => body => form data
+//TODO RESUELTO: hacerlo en postman => body => form data
+//https://learning.postman.com/docs/getting-started/settings/
+//ERROR POSTMAN BROWSER=> https://www.youtube.com/watch?v=cE8bUBalPxk
 //Define endpoint POST to upload picture
 app.post("/upload", upload, (req, res, next) => {
   res.json({
@@ -55,19 +57,19 @@ app.use("/time", (req, res, next) => {
   next()
 });
 
+//TODO RESUELTO: validar user+password con headers
 app.use("/time", (req, res, next) => {
-  if (!req.headers.authorization) {
-    //return res.status(403).json({ error: 'No credentials sent!' });
-    return res.status(401).send("Credentials not valid");
+  if (req.headers.name !== "pepito" || req.headers.password !== "123456") {
+    return res.status(401).json({
+      message: "Credentials not valid"
+    });
   }
-  //else {return res.send('"Cache-control" - "no-cache" set in headers')}
   next();
 })
 
-//TODO Comprobar su contenido de headers
 //Endpoint that responses with time and date. Console shows user sent with Postman body - raw JSON
 app.post("/time", express.json(), (req, res) => {
-  const { user } = req.body
+  const user  = req.headers.name;
   console.log("Requester: ", user);
   const date = new Date();
   res.json({
@@ -76,7 +78,9 @@ app.post("/time", express.json(), (req, res) => {
 });
 
 //Other routes
-//TODO solo vale para GET app.get es mejor usar app.use
+//TODO RESUELTO Evitar html de Express como respuesta 
+//app.get('*',...) => no tiene en cuenta post, delete, put requests y devuelve Express html
+//... SOLUCIÓN usando middleware app.use para el resto de rutas *
 app.use('*', (req,res) => {
   res.status(404).json({
     message: "Page not found"
