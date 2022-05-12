@@ -8,4 +8,6 @@ const db = new Sequelize(mysql.database, mysql.username, mysql.password, {
     // logging: false,
 });
 
+//If your database doesn't exist yet, you can just call db:create command. With proper access it will create that database for you.
+//https://sequelize.org/docs/v6/other-topics/migrations/
 module.exports = db
