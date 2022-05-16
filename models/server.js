@@ -2,6 +2,7 @@ const express  = require('express');
 const http     = require('http');
 const socketio = require('socket.io');
 const path     = require('path');
+const cors     = require('cors');
 
 const Sockets  = require('./sockets');
 const { dbConnection } = require('../db/config')
@@ -23,10 +24,13 @@ class Server {
     middlewares() {
         this.app.use( express.static( path.resolve( __dirname, '../public' ) ) );
         
-        //TODO: CORS
+        this.app.use( cors() );
         
+        //Parse body
+        this.app.use( express.json() );
+
         //API ENDPOINTS
-        this.app.use( '/api/login', require('../routers/auth') ); 
+        this.app.use( '/api/login', require('../routers/auth.routers') ); 
     }
 
     setUpSockets() {
