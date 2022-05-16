@@ -1,5 +1,5 @@
 // Server Model: Express `+ Socket.io
-const Server = require('./server');
+const Server = require('./models/server');
 
 //Environment variables
 require('dotenv').config();

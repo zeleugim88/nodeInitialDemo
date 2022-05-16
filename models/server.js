@@ -3,7 +3,7 @@ const http     = require('http');
 const socketio = require('socket.io');
 const path     = require('path');
 
-//const Sockets  = require('./sockets');
+const Sockets  = require('./sockets');
 
 class Server {
 
@@ -21,14 +21,14 @@ class Server {
         this.app.use( express.static( path.resolve( __dirname, '../public' ) ) );
     }
 
-   /*  setUpSockets() {
+    setUpSockets() {
         new Sockets( this.io );
-    } */
+    }
 
     execute() {
 
         this.middlewares();
-        //this.setUpSockets();
+        this.setUpSockets();
 
         this.server.listen( this.port, () => {
             console.log('Server listening por:', this.port );
