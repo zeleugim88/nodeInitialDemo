@@ -18,6 +18,8 @@ const createUser = async (req, res = response) => {
             //Encriptar contraseña
             //Guardar usuario en DB
             const user = new User( req.body );
+
+            //Generate JWT
             
             //passwords must be always encrypted when saving them in db
             //salt: nº of loops to encrypt
