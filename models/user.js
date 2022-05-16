@@ -9,11 +9,11 @@ const UserSchema = Schema({
     email: {
         type: String,
         required: true,
-        uniquie: true, //email must be unique
+        unique: true //email must be unique
     },
     password: {
         type: String,
-        required: true,
+        required: true
     },
     online: {//to show if user is connected or not
         type: String,
@@ -23,7 +23,7 @@ const UserSchema = Schema({
 
 //To avoid sending the version, the user_id and the password in the future:
 UserSchema.method('toJSON', function (){
-    const {__v, _id, password, ...object} = this.Object();
+    const {__v, _id, password, ...object} = this.toObject();
     object.uid = _id;
     return object;
 })
