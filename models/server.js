@@ -22,6 +22,11 @@ class Server {
 
     middlewares() {
         this.app.use( express.static( path.resolve( __dirname, '../public' ) ) );
+        
+        //TODO: CORS
+        
+        //API ENDPOINTS
+        this.app.use( '/api/login', require('../routers/auth') ); 
     }
 
     setUpSockets() {
