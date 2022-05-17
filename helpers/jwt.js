@@ -1,22 +1,30 @@
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
-const generarJWT = ( uid ) => {
 
-    return new Promise ((resolve, reject) => {
-        const payload = { uid } //info easily hackeable
-        jwt.sign( payload, process.env.JWT_KEY,{
+const generateJWT = ( uid ) => {
+
+    return new Promise(  ( resolve, reject ) => {
+
+        const payload = { uid };
+
+        jwt.sign( payload, process.env.JWT_KEY, { // secretOrPrivateKey => danger! nobody can find this parameter
             expiresIn: '24h'
-        }, (err, token) => {
-            if (err) {
+        }, ( err, token ) => {
+
+            if ( err ) {
                 console.log(err);
-                reject("JWT could not be sent")
+                reject('JWT could not be generated');
             } else {
-                resolve
+                resolve( token );
             }
+
         });
     });
+    
 }
 
+
+
 module.exports = {
-    generarJWT
+    generateJWT
 }

@@ -3,6 +3,7 @@ const { response } = require("express");
 const bcrypt = require('bcryptjs')
 
 const User = require('../models/user');
+const { generateJWT } = require('../helpers/jwt')
 
 const createUser = async (req, res = response) => {
         try {
@@ -19,8 +20,15 @@ const createUser = async (req, res = response) => {
             //Guardar usuario en DB
             const user = new User( req.body );
 
-            //Generate JWT
+            //Generate JWT when user is created
+            const token = await generateJWT ( user.id )
             
+            res.json[{user}]
+            /* res.json({
+                user,
+                token
+            }) */
+
             //passwords must be always encrypted when saving them in db
             //salt: nº of loops to encrypt
             const salt = bcrypt.genSaltSync();
@@ -28,11 +36,7 @@ const createUser = async (req, res = response) => {
             //hash de una sola vía, difícil de desencriptar
 
             await user.save()
-            
-            res.json({
-                user //user as response throws error
-                //email, password
-            })
+        
 
         } catch (error) {
             console.log(error);
