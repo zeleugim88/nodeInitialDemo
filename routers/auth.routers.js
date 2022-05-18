@@ -7,6 +7,7 @@ const { createUser,
         loginUser,
         renewToken } = require('../controllers/auth.controllers')
 const { validateInputs } = require('../middlewares/validateInputs')
+const { validateJWT } = require('../middlewares/validateJWT')
 const router = Router();
 
 //Endpoints definitions
@@ -29,6 +30,6 @@ router.post( '/', [
  ], loginUser)
 
 //Endpoint 3: Revalidate token
-router.get( '/renew', renewToken)
+router.get( '/renew', validateJWT, renewToken)
 
 module.exports = router;

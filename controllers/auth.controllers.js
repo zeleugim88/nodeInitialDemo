@@ -3,7 +3,8 @@ const { response } = require("express");
 const bcrypt = require('bcryptjs')
 
 const User = require('../models/user');
-const { generateJWT } = require('../helpers/jwt')
+const { generateJWT } = require('../helpers/jwt');
+const user = require("../models/user");
 
 const createUser = async (req, res = response) => {
         try {
@@ -16,8 +17,7 @@ const createUser = async (req, res = response) => {
                     msg: 'Email already existing'
                 }) 
             }
-            //Encriptar contraseña
-            //Guardar usuario en DB
+            
             const user = new User( req.body );
 
             //Generate JWT when user is created
@@ -35,6 +35,7 @@ const createUser = async (req, res = response) => {
             user.password = bcrypt.hashSync(password, salt);
             //hash de una sola vía, difícil de desencriptar
 
+            //Save user in DB
             await user.save()
         
 
@@ -50,12 +51,54 @@ const createUser = async (req, res = response) => {
 const loginUser = async (req, res = response) => { 
 
     const { email, password } = req.body;
-    //this will be only executed if errors object is empty
+
+    try { //Check if email already exists
+        const userDB = await User.findOne({email})
+        if (!userDB) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Email no encontrado'
+            })
+        }
+        //Validate password
+        const validPassword = bcrypt.compareSync( password, userDB.password );
+        if ( !validPassword ) {
+            return res.status(404).json({
+                ok: false,
+                msg: 'Password not valid'
+            })
+        }
+        //Generate JWT
+        const token = await generateJWT( userDB.id );
+
+        res.json({
+            ok: true,
+            user: userDB,
+            token
+        })
+    } catch (error) {
+        //this will be only executed if errors object is empty
     res.json({ ok: true, msg: 'login', email, password })
+    }
+    
 }
 
 const renewToken = async (req, res = response) => {
-    res.json({ ok: true, msg: 'renew' })
+    
+    const uid = req.uid;
+
+    //Generate new JWT
+    const token = await generateJWT( uid );
+
+    //Get user by UID
+    const user = await User.findById( uid );
+
+    res.json({
+        ok: true,
+        user,
+        token
+    })
+
 }
 
 module.exports = {
