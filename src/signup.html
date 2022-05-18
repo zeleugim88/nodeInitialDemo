@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+*{
+    padding: 0;
+    margin: 0
+}
+body {
+  position: fixed;
+  background-image: url("./assets/mars_planet.jpg");
+  background-size: 2000px 1000px;
+}
+        header {   
+            background-color: blue;
+            left: 0px;
+            top: 0px;
+            bottom: 0px;
+            width: 260px;
+    }
+
+    .logo {
+  max-width: 150px;
+  max-height: 150px;
+  position: fixed;
+  top: 5px;
+  left: 5px;
+}
+
+    aside {
+        background-image: url("./assets/metalic.png");
+        position: fixed;
+        right: 0px;
+        width: 15%;
+        bottom: 0px;
+        top: 0px; 
+    }
+
+    .welcome {
+        position: fixed;
+        margin: auto;
+        width: 84%;
+        height: 40%;
+        top: 40%
+    }
+        footer {
+        left: 0px;
+        width: 260px;
+        bottom: 50px;
+    }
+
+    ul { list-style-type: none;}
+li { display: inline-block;}
+
+a {
+  color: #42b983;
+  padding: 10px;
+}
+
+    .presentation {
+  position: fixed;
+  right: 40%;
+  top: 40%;
+  text-align: center;
+}
+
+h1 {   font-size:50px;
+       font-family: Verdana;
+       color: DimGrey;
+       filter: brightness(50%);
+       padding: 0px;
+       border: 0px;
+       margin: 0px;
+    }
+
+p {   font-size: 20px;
+    font-family: Verdana;
+       color: DimGrey;
+       filter: brightness(50%);
+    padding: 0px }
+
+    .info {
+  position: fixed;
+  text-align: center;
+  left: 0;
+  bottom: 0;
+  width: 300px;
+  color: white;
+  text-align: center;
+}
+
+.button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+    </style>    
+</head>
+<body>
+    <header>
+        <img class="logo" alt="MCR logo" src="./assets/mars-congress.png">
+    </header>
+    <aside>
+        <div class="rightbox">
+          <div class="limiter">
+            <div class="container-login100">
+              <div class="wrap-login100 p-t-50 p-b-90">
+                <form class="login100-form validate-form flex-sb flex-w">
+                  <span class="login100-form-title mb-3">
+                    Chat - Ingreso
+                  </span>
+                  
+                  <div class="wrap-input100 validate-input mb-3">
+                    <input class="input100" type="email" name="email" placeholder="Email" />
+                    <span class="focus-input100"></span>
+                  </div>
+                  
+                  
+                  <div class="wrap-input100 validate-input mb-3">
+                    <input class="input100" type="password" name="password" placeholder="Password" />
+                    <span class="focus-input100"></span>
+                  </div>
+                  
+                  <div class="row mb-3">
+                    <div class="col">
+                      <input class="input-checkbox100" id="ckb1" type="checkbox" name="remember-me" />
+                      <label class="label-checkbox100">
+                        Recordarme
+                      </label>
+                    </div>
+        
+                    <div class="col text-right">
+                      <a href="register.html" class="txt1">
+                        Nueva cuenta?
+                      </a>
+                    </div>
+                  </div>
+        
+                  <div class="container-login100-form-btn m-t-17">
+                    <button class="login100-form-btn">
+                      Ingresar
+                    </button>
+                  </div>
+        
+                </form>
+              </div>
+            </div>
+          </div>
+            <input type="button" class="button" id="singup" value="Return to Base Camp">
+        </div>
+    </aside>
+    <div class="welcome">
+        <div class="presentation">
+            <h1>The Martian Chat</h1>
+            <p>
+              Keeping our space explorers connected since 2340
+            </p>
+    </div>
+    <footer>
+        <div class="info">
+            <h3 style="font-size: 12px">Intergalactic Communication Services provided by: </h3>
+            <ul>
+              <li><a href="https://www.barcelonactiva.cat/es/itacademy" target="_blank" rel="noopener">IT Academy</a></li>
+              <li><a href="https://github.com/zeleugim88/" target="_blank" rel="noopener">Github</a></li>
+            </ul>
+          </div>
+    </footer>
+    <script>
+      function changePage(){
+  window.location.href = "login.html";
+} 
+    </script>
+</body>
+</html>
