@@ -14,7 +14,7 @@ const createUser = async (req, res = response) => {
                 return res.status(400).json({
                     ok: false,
                     msg: 'Email already existing'
-                })
+                }) 
             }
             //Encriptar contraseña
             //Guardar usuario en DB
@@ -23,11 +23,11 @@ const createUser = async (req, res = response) => {
             //Generate JWT when user is created
             const token = await generateJWT ( user.id )
             
-            res.json[{user}]
-            /* res.json({
+            
+            res.json({
                 user,
                 token
-            }) */
+            })
 
             //passwords must be always encrypted when saving them in db
             //salt: nº of loops to encrypt
