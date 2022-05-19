@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- <link rel="stylesheet" href="./assets/css/home.css">
+    <link rel="stylesheet" href="./assets/css/main.css"> -->
+  
+ 
+</head>
+<body>
+    <header>
+        <!-- <img class="logo" alt="MCR logo" src="./assets/mars-congress.png"> -->
+    </header>
+    <aside>
+        <div class="rightbox">
+              <div class="login-box">
+                <form onsubmit="return login(this)">
+
+                  <input type="text" name="email" placeholder="enter email"><br>
+                  <input type="text" name="password" placeholder="enter password"><br><br>
+                  <input type="submit" value="Submit">
+                </form> 
+              </div>
+
+              <div class="signup-box">
+                <form onsubmit="return signup(this)">
+                  <input type="text" name="username" placeholder="enter username"><br>
+                  <input type="text" name="email" placeholder="enter email"><br><br>
+                  <input type="text" name="password" placeholder="enter password"><br><br>
+                  <input type="submit" value="Submit">
+                </form> 
+              </div>
+                
+        </div>
+    </aside>
+    <div class="welcome">
+        <div class="presentation">
+            <h1>The Martian Chat</h1>
+            <p>
+              Keeping our space explorers connected since 2340
+            </p>
+    </div>
+    <footer>
+        <div class="info">
+            <h3 style="font-size: 12px">Intergalactic Communication Services provided by: </h3>
+            <ul>
+              <li><a href="https://www.barcelonactiva.cat/es/itacademy" target="_blank" rel="noopener">IT Academy</a></li>
+              <li><a href="https://github.com/zeleugim88/" target="_blank" rel="noopener">Github</a></li>
+            </ul>
+          </div>
+    </footer>
+    <script>
+
+      //FUNCTION TO LOGIN
+      function login(form){
+          console.log(form.email.value);
+          console.log(form.password.value);
+
+          const userInfo = {
+            "email": form.email.value,
+            "password": form.password.value
+        }
+          // console.log(userInfo)
+          fetch("http://localhost:8080/api/login/",{
+            method: 'post',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userInfo),
+          })
+          .then( response => {
+            return response.json();
+          })
+          .then( json => console.log(json) )
+          .catch( err => console.error(`Fetch problem: ${err.message}`) );
+        return false
+} 
+      //FUNCTION TO SIGNUP
+      function signup(form) {
+        console.log(form.username.value);
+          console.log(form.email.value);
+          console.log(form.password.value);
+
+          const userInfo = {
+            "name": form.username.value,
+            "password": form.password.value,
+            "email": form.email.value,
+
+        }
+          // console.log(userInfo)
+          fetch("http://localhost:8080/api/login/new/",{
+            method: 'post',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(userInfo),
+          })
+          .then( response => {
+            return response.json();
+          })
+          .then( json => console.log(json) )
+          .catch( err => console.error(`Fetch problem: ${err.message}`) );
+        return false
+      }
+    </script>
+</body>
+</html>
