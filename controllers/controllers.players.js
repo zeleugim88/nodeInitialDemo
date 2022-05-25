@@ -6,6 +6,8 @@ const sequelize = require('../database/mysql.connection.js') // This is the main
 const { Op } = require('sequelize'); //Sequelize provides several operators "Op" => where ([Op.and]:, [Op.or]); 
 //some attributes ([Op.eq], [Op.ne]...) https://sequelize.org/docs/v6/core-concepts/model-querying-basics/
 
+
+//CONTROLLER ENDPOINT 1 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 const postPlayers = //Controller for endpoint 1 => POST /players: crea un jugador
   async (req = request, res = response) => {
     //If user introduces either no name or "ANÒNIM", an anonymous player is created. 
@@ -22,18 +24,22 @@ const postPlayers = //Controller for endpoint 1 => POST /players: crea un jugado
     else if (req.body.name) {
       try {
         let i = "";
-        let newName = "";
+        let newName = req.body.name;
         let foundPlayer = "";
         do {
-          newName = req.body.name + String(i);
-          foundPlayer = await Player.findOne({ where: { name: newName } });
+          proposedName = req.body.name + String(i);
+          foundPlayer = await Player.findOne({ where: { name: proposedName } });
           i++
         }
         while (foundPlayer !== null); //error
-        const newPlayer = await Player.create({
-          name: newName
-        });
-        res.status(200).json(newPlayer);
+        if(newName == proposedName) {
+          const newPlayer = await Player.create({
+            name: newName
+          });
+          res.status(200).json(newPlayer);
+        } else {
+          res.status(400).json({msg : (`${newName} is already taken, what about ${proposedName}?`)})
+        }
       } catch (error) {
         console.log(error)
         res.status(400).send(error)
@@ -41,13 +47,15 @@ const postPlayers = //Controller for endpoint 1 => POST /players: crea un jugado
     };
   };
 
+
+//CONTROLLER ENDPOINT 2 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 const putPlayers = //Controller for Endpoint 2 => PUT /players: modifica el nom del jugador
   async (req = request, res = response) => {
-    if (req.body.newName && req.body.name) {
+    if (req.body.newName && req.body.id) {
       let foundPlayer = "";
       try {
         foundPlayer = await Player.findOne(
-          { where: { name: req.body.name } }
+          { where: { id: req.body.id } }
         )
       } catch (error) {
         console.log(error)
@@ -61,7 +69,7 @@ const putPlayers = //Controller for Endpoint 2 => PUT /players: modifica el nom 
     } else { console.log(res.status(400).json({ "Error": "Introduce both a new name and the old name to update" })) }
   }
 
-
+//CONTROLLER ENDPOINT 3 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 const postThrowDices = //Controller for endpoint 3 => POST /players/{id}/games: un jugador específic realitza una tirada
   async (req = request, res = response) => {
 
@@ -127,6 +135,8 @@ const postThrowDices = //Controller for endpoint 3 => POST /players/{id}/games: 
     }
   }
 
+
+//CONTROLLER ENDPOINT 4 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 const deletePlayerThrows = //Controller for endpoint 4 => DELETE /players/{id}/games: elimina les tirades del jugador
   async (req, res) => {
     const gamesToDelete = await Game.destroy({
@@ -135,77 +145,15 @@ const deletePlayerThrows = //Controller for endpoint 4 => DELETE /players/{id}/g
     res.json({ "Request fulfilled": `${gamesToDelete} games from Player ${req.params.id} deleted!` });
   }
 
+//CONTROLLER ENDPOINT 5 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 const getPlayers = //Controller for endpoint 5 => GET /players: retorna el llistat de tots els jugadors del sistema amb el seu percentatge mig d’èxits
   async (req, res) => {
     try {
-      res.json(await Player.findAll())
+      res.json({players: await Player.findAll()})
     } catch (error) { res.status(400).send(error) }
   };
 
-const getGames = //Controller for endpoint 6 => GET /players/{id}/games: retorna el llistat de jugades per un jugador.
-  async (req, res) => {
-    try {
-      res.json(await Game.findAll({ where: { player_id: req.params.id } }))
-    } catch (error) {
-      res.status(404).send(error);
-    }
-  }
 
-const getScores =
-  async (req, res) => { //Controller for endpoint 7 => GET /players/ranking: retorna el percentatge mig d’èxits del conjunt de tots els jugadors
-    try {
-      const playersNum = await Player.count();
-      const sumVictoryRates = await Player.sum('victoryRate');
-      const totalVictoryRate = Math.round((sumVictoryRates / playersNum) * 1000) / 1000;
-      res.json({ totalVictoryRate: totalVictoryRate })
-      //Otra forma:
-      /* res.json(await Game.findAll({
-        attributes: [[sequelize.fn('AVG', sequelize.col('victory')), 'totalVictoryRate']]
-      })) */
-    } catch (error) {
-      res.status(400).send(error);
-    }
-  }
-
-const getLoser = //Controller for endpoint 8 => GET /players/ranking/loser: retorna el jugador amb pitjor percentatge d’èxit  
-  async (req, res) => {
-    try {
-      const minScore = await Player.min('victoryRate');
-      const loser = await Player.findAll({ where: { victoryRate: minScore } });
-      res.status(200).json( { loser } );
-/*       const minScore = await Player.findAll({
-        attributes: [[sequelize.fn('MIN', sequelize.col('victoryRate')), 'lowestScore']]
-      });
-      const loser = await Player.findAll({
-        where: { //https://sequelize.org/api/v6/class/src/model.js~model
-          victoryRate: { [Op.eq]: minScore[0].dataValues.lowestScore }
-        }
-      }); 
-      res.json(loser); */
-    } catch (error) {
-      res.status(400).send(error);
-    }
-  }
-
-const getWinner = //Controller for endpoint 9 => GET /players/ranking/winner: retorna el jugador amb millor percentatge d’èxit
-  async (req, res) => { //9
-    try {
-      const maxScore = await Player.max('victoryRate');
-      const winner = await Player.findAll({ where: { victoryRate: maxScore } })
-      res.status(200).json({ winner });
-      /* const maxScore = await Player.findAll({
-        attributes: [[sequelize.fn('MAX', sequelize.col('victoryRate')), 'highestScore']]
-      }); */
-      /* const winner = await Player.findOne({
-        where: { //https://sequelize.org/api/v6/class/src/model.js~model
-          //Model instances operate with the concept of a "dataValues" property, which stores the actual values represented by the instance.
-          victoryRate: { [Op.eq]: maxScore[0].dataValues.highestScore }
-        },
-      }); */
-    } catch (error) {
-      res.status(400).send(error);
-    }
-  }
 
 
 module.exports = {
@@ -213,9 +161,5 @@ module.exports = {
   putPlayers,
   postThrowDices,
   deletePlayerThrows,
-  getPlayers,
-  getGames,
-  getScores,
-  getLoser,
-  getWinner
+  getPlayers
 };

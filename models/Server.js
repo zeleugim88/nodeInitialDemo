@@ -10,7 +10,6 @@ class Server {
     constructor() {
         this.app = express();
         this.port = process.env.PORT || 3000;
-        this.homePage = '/';
         this.pathPlayers = '/players';
         
         //Do not change order. 1) Connect to DB, 2) Middlewares, 3) Routes
@@ -38,12 +37,6 @@ class Server {
     }
 
     routes() {
-        //Homepage
-        this.app.get(this.homePage, (req, res) => {
-            res.json({
-              msg: 'HOMEPAGE',
-            })
-          })
         
         //Routes from /players
         this.app.use( this.pathPlayers, require('../routes/routes.players.js'));

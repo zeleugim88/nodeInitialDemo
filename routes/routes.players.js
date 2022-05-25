@@ -5,11 +5,14 @@ const { postPlayers,
         postThrowDices,
         deletePlayerThrows,
         getPlayers,
-        getGames,
-        getScores,
-        getLoser,
-        getWinner
     } = require('../controllers/controllers.players.js');
+
+const {
+    getGames,
+    getScores,
+    getLoser,
+    getWinner
+} = require('../controllers/controllers.rankings.js')
 
 const router = Router();
 
