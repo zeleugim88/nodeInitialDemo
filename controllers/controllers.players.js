@@ -148,7 +148,15 @@ const deletePlayerThrows = //Controller for endpoint 4 => DELETE /players/{id}/g
     const gamesToDelete = await Game.destroy({
       where: { player_id: req.params.id },
     });
-    res.json({ "Request fulfilled": `${gamesToDelete} games from Player ${req.params.id} deleted!` });
+    
+    //Destroy victory rate:
+    const foundPlayer = await Player.findOne({
+      where: { id: req.params.id },
+    });
+
+    foundPlayer.victoryRate = 0;
+    await foundPlayer.save();
+    res.json({ "Request fulfilled": `${gamesToDelete} games from Player ${req.params.id} deleted!. Its Victory Rate has also been deleted` });
   }
 
 //CONTROLLER ENDPOINT 5 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
