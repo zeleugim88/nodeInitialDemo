@@ -1,12 +1,15 @@
 
+const username = process.env.DB_USERNAME;
+const password = process.env.DB_PASSWORD;
+const database = process.env.DB_DATABASE;
+const host = process.env.DB_HOST;
+
 const mysql = {
-    username: "root",//process.env.USERNAME, 
-    password: "123456",//process.env.PASSWORD
-    database: "node",//process.env.DATABASE
-    host: "localhost"//process.env.HOST
+    username: username,
+    password: password,
+    database: database,
+    host: host
 }
 
 module.exports = mysql;
 
-//ERROR BY USING ENV VARIABLES
-//https://stackoverflow.com/questions/34167595/access-denied-for-mysql-connection-in-nodejs

@@ -6,6 +6,7 @@ const sequelize = require('../database/mysql.connection.js') // This is the main
 const { Op } = require('sequelize'); //Sequelize provides several operators "Op" => where ([Op.and]:, [Op.or]); 
 //some attributes ([Op.eq], [Op.ne]...) https://sequelize.org/docs/v6/core-concepts/model-querying-basics/
 
+const throwDices = require('../helpers/throwDices')
 
 //CONTROLLER ENDPOINT 1 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 const postPlayers = //Controller for endpoint 1 => POST /players: crea un jugador
@@ -73,11 +74,16 @@ const putPlayers = //Controller for Endpoint 2 => PUT /players: modifica el nom 
 const postThrowDices = //Controller for endpoint 3 => POST /players/{id}/games: un jugador específic realitza una tirada
   async (req = request, res = response) => {
 
-    //Throw two dices. If total socre is 7, the player has won the game. 
+/*     //Throw two dices. If total socre is 7, the player has won the game. 
     const diceRoll1 = Math.floor(Math.random() * 6) + 1;
     const diceRoll2 = Math.floor(Math.random() * 6) + 1;
     const score = diceRoll1 + diceRoll2;
     const victory = score === 7 ? true : false;
+    console.log(victory) */
+
+       //Throw two dices. If total socre is 7, the player has won the game. 
+      
+      const result = throwDices() //Throw dices: it returns an object { victory: victory, score : score }
 
     //Search player in database
     let foundPlayer = "";
@@ -98,8 +104,8 @@ const postThrowDices = //Controller for endpoint 3 => POST /players/{id}/games: 
       try {
         const newGame = await Game.create({
           player_id: req.params.id,
-          score: score,
-          victory: victory
+          score: result.score,
+          victory: result.victory
         });
 
         res.status(200).json(newGame);

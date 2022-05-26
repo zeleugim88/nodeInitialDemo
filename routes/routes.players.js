@@ -14,25 +14,32 @@ const {
     getWinner
 } = require('../controllers/controllers.rankings.js')
 
+//Routes
+const main = '/';
+const idGames = '/:id/games';
+const ranking = '/ranking';
+const loserRanking = '/ranking/loser';
+const winnerRanking = '/ranking/winner';
+
 const router = Router();
 
-router.post('/', postPlayers); //1
+router.post(main, postPlayers); //1
 
-router.put('/', putPlayers); //2
+router.put(main, putPlayers); //2
 
-router.post('/:id/games', postThrowDices); //3 
+router.post(idGames, postThrowDices); //3 
 
-router.delete('/:id/games', deletePlayerThrows ); //4
+router.delete(idGames, deletePlayerThrows ); //4
 
-router.get('/', getPlayers ); //5
+router.get(main, getPlayers ); //5
 
-router.get('/:id/games', getGames ); //6
+router.get(idGames, getGames ); //6
 
-router.get('/ranking', getScores ); //7
+router.get(ranking, getScores ); //7
 
-router.get('/ranking/loser', getLoser ); //8
+router.get(loserRanking, getLoser ); //8
 
-router.get('/ranking/winner', getWinner ); //9
+router.get(winnerRanking, getWinner ); //9
 
 
 module.exports = router;

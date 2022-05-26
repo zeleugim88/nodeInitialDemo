@@ -5,7 +5,7 @@ const mysql = require('../config.js')
 const db = new Sequelize(mysql.database, mysql.username, mysql.password, {
     host: mysql.host,
     dialect: 'mysql',
-    // logging: false,
+    logging: false
 });
 
 //If your database doesn't exist yet, you can just call db:create command. With proper access it will create that database for you.
