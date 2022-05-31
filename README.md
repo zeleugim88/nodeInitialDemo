@@ -1,50 +1,43 @@
+# 👩‍🚀 SPRINT 5: SOCKET CHAT 👽
 
-# Node Initial Project
+### Sign Up / Log In ✍️
+_To create your chat user, provide a nickname and a password. To Log in again, use the same nickname and password._
 
-### Project Structure
+![Demo](https://raw.githubusercontent.com/zeleugim88/chat-it-academy/main/img/1.png)
 
-Main structure of node.js project. Folders / files:
+### Menu 🏡
+_On this page you can either join an already created room (on the right sidebar) or create your own room (button at the center). If there is not any room created, you will need to create one at least._
 
-- <b>\_\_tests__</b>. Tests folder. See [Jest Docs](https://jestjs.io/es-ES/docs/configuration) and [Chai Docs](https://www.chaijs.com/)
-- <b>app</b>:
-    - <b>config</b>
-    - <b>controllers</b>
-    - <b>crons</b>
-    - <b>middleware</b>
-    - <b>models</b>
-    - <b>routes</b>
-    - <b>tmp</b>
-    - <b>app.js</b>. Entry point.
-- <b>.env</b>. Environment descriptor. See [dotenv doc](https://www.npmjs.com/package/dotenv).
-- <b>.eslintrc</b>. Linter JS, static code analyzer. See [EsLint Docs](https://eslint.org/docs/user-guide/configuring/configuration-files).
-- <b>.prettierignore</b>. Code formatter. See [Prettier Config](https://prettier.io/docs/en/configuration.html) and [Prettier Ignore](https://prettier.io/docs/en/ignore.html).
-- <b>.ecosystem.config.js</b>. Process Manage at runtime. See [PM2 Docs](https://pm2.keymetrics.io/).
-- <b>package.json</b>.
+![Demo](https://raw.githubusercontent.com/zeleugim88/chat-it-academy/main/img/2.png)
 
-### Import project for use with WebStorm
+### Chat Page - Two users chatting
 
-Follow the steps below:
-* Clone the project from the Github Platform. Execute:
-  ```
-  git clone [url project]
-  ```
-* Open the project downloaded.
-![Open Project](img/webstorm_open.png)
+![Demo](https://raw.githubusercontent.com/zeleugim88/chat-it-academy/main/img/3.png)
 
+### Chat Page - One user leaves the room to come back to the Menu
 
-### Import project for use with Visual Studio Code
+![Demo](https://raw.githubusercontent.com/zeleugim88/chat-it-academy/main/img/4.png)
 
-Follow the steps below:
-* Clone the project from the Github Platform. Execute:
-  ```
-  git clone [url project]
-  ```
-* Open the project downloaded.
-  ![Open Project](img/VSC_open.png)
+## Chat Tech
+![Demo](https://raw.githubusercontent.com/zeleugim88/chat-it-academy/main/img/5.png)
 
+### Client Technology used💻
+_The frontend has been developed without using any frameworks, just with javascript (vanilla style)._
+_An express server was initiated to be able to serve the static content (in folder public) with more funcionalities like choosing the server PORT._ 
+_Public folder contains: _
+1) Some style assets like CSS, images... 
+2) 3 HTML files (homepage for signup / login, menu page and chat page). 
+3) 3 Javascript files (one for each HTML file) that contains the buttons, event-handlers, html-elements definition and using of session storage.
+4) 2 helper javascript files (users and rooms) for the FETCH functions that manage the requests and the responses with the server. 
+ 
+ ⚠️ FRONT IS NOT RESPONSIVE, SO THE CHAT CAN ONLY BE USED IN COMPUTER WITH FULL SCREEN ⚠️
+ 
+ ![Demo](https://raw.githubusercontent.com/zeleugim88/chat-it-academy/main/img/6.png)
 
-### Utilities
+### Server Technology used⚙️
+_Express, HTTP and Socket server are class based. This provides a clean way to organize the chat._
+_The database models are 3: message, room and user. This last one has two methods to generate authentification tokens and to find users in database._
+_There are 6 endpoints defined clearly and separately in both routes and controllers folder: 1. POST /signup, 2. POST /login, 3. GET /user , 4. POST /rooms_ , 5. GET /rooms, 6. PATCH /rooms
+_Authentification is based on Json Web Tokens_
 
-* [Node Developers Guide](https://nodejs.dev/learn)
-* **.gitignore file** configuration. See [Official Docs](https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files).
-* **Git branches**. See [Official Docs](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell)
+![Demo](https://raw.githubusercontent.com/zeleugim88/chat-it-academy/main/img/7.png)

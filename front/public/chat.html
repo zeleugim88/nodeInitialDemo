@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Chat</title>
+    <!-- <link rel="icon" href="/img/favicon.png"> -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+  </head>
+
+  <body>
+
+    <div class="chat">
+      
+      <aside>
+        <div id="sidebar" class="chat__sidebar"></div>
+        
+        <div class="buttons_box">
+          <button class="sidebar_buttons" id="change-room">Change Room</button>
+          <button class="sidebar_buttons" id="logout">Log out</button>
+        </div>
+
+      </aside>
+      
+      <div class="chat__main">
+        <div id="messages" class="chat__messages"></div>
+
+          <div class="compose">
+              <form id="message-form">
+                  <input name="inputMessage" id="chat-message" placeholder="Message" required autocomplete="off">
+                  <button id="send-message">Send</button>
+              </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script src="./js/chat.js"></script>
+  </body>
+</html>

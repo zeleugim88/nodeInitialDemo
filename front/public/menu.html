@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<head>
+    
+    <title>Rooms</title>
+    <!---  <link rel="icon" href="/img/favicon.png"> -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <header>
+        <img class="logo" alt="MCR logo" src="./assets/mars-congress.png">
+    </header>
+    <div class="room">
+
+        <div class="centered-form-room">
+            <div class="centered-form-room__box">
+                <p>Create New Custom Connection</p>
+                <form>
+                    <input type="text" id="roomName" placeholder="SpaceRoom">
+                    <button id="newRoom">Open Wormhole</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="room__sidebar" class="room__sidebar">
+
+            <div class="welcome"></div>
+            <p>Deep Space <br> Communication Channels</p>
+            <div class="buttons_box"></div>
+
+        </div>
+
+    </div> 
+        <div class="mini-footer-left"> </div>
+        <div class="mini-footer-right"> </div>
+    </div>
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script type="module" src="./js/menu.js"></script>
+</body>
+</html>

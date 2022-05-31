@@ -1,0 +1,4 @@
+
+MONGO=mongodb://localhost/theMartianChatDB
+JWT_KEY=ITAcademyafavordeunaencriptacionseguraysana
+CLIENT_PORT=8080
