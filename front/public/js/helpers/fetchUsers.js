@@ -4,6 +4,9 @@ var userData = JSON.parse(window.sessionStorage.getItem('user_data'));
 //Fetch Sign Up
 const postNewUser = async (req) => {
     try{
+        if(!req.name) {return alert('Missing name in SignUp')};
+        if(!req.password) {return alert('Missing password in SignUp')};
+        console.log(req)
         const res = await fetch(URL+'/signup', {
             method: 'POST',
             headers: {
@@ -13,9 +16,9 @@ const postNewUser = async (req) => {
         });
         const data = await res.json();
         //This is not working
-        if(data.keyPattern){
+/*         if(data.keyPattern){
             return alert('Username already exists');
-        }
+        } */
         if(data.errors){
             return alert(data.message);
         }
@@ -32,6 +35,8 @@ const postNewUser = async (req) => {
 //Fetch Login
 const loginNewUser = async (req) => {
     try{
+        if(!req.name) {return alert('Missing name in Login')};
+        if(!req.password) {return alert('Missing password in Login')};
         const res = await fetch(URL+'/login', {
             method: 'POST',
             headers: {
