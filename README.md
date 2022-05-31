@@ -27,7 +27,7 @@ _An express server was initiated to be able to serve the static content (in fold
 _Public folder contains: _
 1) Some style assets like CSS, images... 
 2) 3 HTML files (homepage for signup / login, menu page and chat page). 
-3) 3 Javascript files (one for each HTML file) that contains the buttons, event-handlers, html-elements definition and cleaning of session storage.
+3) 3 Javascript files (one for each HTML file) that contains the buttons, event-handlers, html-elements definition and using of session storage.
 4) 2 helper javascript files (users and rooms) for the FETCH functions that manage the requests and the responses with the server. 
  
  ⚠️ FRONT IS NOT RESPONSIVE, SO THE CHAT CAN ONLY BE USED IN COMPUTER WITH FULL SCREEN ⚠️
@@ -36,8 +36,8 @@ _Public folder contains: _
 
 ### Server Technology used⚙️
 _Express, HTTP and Socket server are class based. This provides a clean way to organize the chat._
-_The database models are 3: message, room and user. This last one hast two methods to generate authentification tokens and to find users in database._
-_There are five endpoints defined clearly and separately in both routes and controllers folder: /signup, /login, /user and /rooms_
+_The database models are 3: message, room and user. This last one has two methods to generate authentification tokens and to find users in database._
+_There are 6 endpoints defined clearly and separately in both routes and controllers folder: 1. POST /signup, 2. POST /login, 3. GET /user , 4. POST /rooms_ , 5. GET /rooms, 6. PATCH /rooms
 _Authentification is based on Json Web Tokens_
 
 ![Demo](https://raw.githubusercontent.com/zeleugim88/chat-it-academy/main/img/7.png)
